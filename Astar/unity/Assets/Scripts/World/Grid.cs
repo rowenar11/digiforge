@@ -37,17 +37,28 @@ public class Grid : MonoBehaviour
 				_zone = (GameObject)Instantiate(zone);
 				Vector3 pos;
 
-				if(x == 0 && y == 0) pos = new Vector3(-Main.instance.area.x/2, Main.instance.area.y/2, 0);
+				if (x == 0 && y == 0)
+				{
+					Debug.Log("DO THAT SHIT : " + _zone.renderer.bounds.size.x + ":" + _zone.renderer.bounds.size.y);
+					
+					
+
+					pos = new Vector3(-Main.instance.area.x / 2, Main.instance.area.y / 2, 0);
+					pos.x -= colWidth / 2;
+					pos.y -= colHeight / 2;
+					Debug.Log(" :: " + pos.x + "|" + pos.y + "  " + colWidth + "x" + colHeight);
+				}
 				else
 				{
 					pos = lastZone.transform.position;
 					pos.x += colWidth;
 				}
-				
+
 				_zone.transform.position = pos;
-				
 				lastZone = _zone;
 			}
+
+
 		}
 
 	}
