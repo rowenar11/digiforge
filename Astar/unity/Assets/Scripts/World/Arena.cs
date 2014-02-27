@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Arena : MonoBehaviour 
+public class Arena : Touchable 
 {
+	public void init()
+	{
+	}
+
 }

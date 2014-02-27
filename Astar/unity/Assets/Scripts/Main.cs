@@ -4,15 +4,14 @@ using System.Collections;
 public class Main : MonoSingleton<Main>
 {
 	public GameObject grid;
-	private Grid _grid;
+	public Grid Grid;
 
 	public Vector2 area;
-	public GameObject levelOne;
+	public Arena arena;
 
 	void Start()
 	{
 		DontDestroyOnLoad(gameObject);
-
 		init();
 	}
 	
@@ -27,9 +26,11 @@ public class Main : MonoSingleton<Main>
 		Debug.Log("camera : " + area.x + " x " + area.y);
 
 		GameObject gridPrefab = (GameObject)Instantiate(grid);
-		_grid = gridPrefab.GetComponent<Grid>();
-		_grid.init();
+		Grid = gridPrefab.GetComponent<Grid>();
+		Grid.init();
 
-		levelOne = GameObject.Find("LevelOne");
+		GameObject levelOne = GameObject.Find("LevelOne");
+		arena = levelOne.GetComponent<Arena>();
+		arena.init();
 	}
 }
