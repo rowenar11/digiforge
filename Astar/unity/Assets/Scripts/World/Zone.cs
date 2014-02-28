@@ -20,6 +20,7 @@ public class Zone : Touchable
 	public Material BLOCK;
 	public Material SELECTED;
 	public Material HIGHLIGHTED;
+	public Material NEIGHBOR;
 	public Material HERO;
 
 	private bool _collisionActive=false;
@@ -67,6 +68,14 @@ public class Zone : Touchable
 	{
 		yield return new WaitForSeconds(0.25f);
 		_collider.Enable();
+	}
+
+	public void setNeighborState()
+	{
+		disableTap();
+		disableMouseOvr();
+		Debug.LogError("NEIGHBOR STATE");
+		this.gameObject.renderer.material = NEIGHBOR;
 	}
 
 	public void setHeroState()

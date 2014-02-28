@@ -21,7 +21,9 @@ public class Grid : MonoBehaviour
 
 	public List<Zone> selectedZones;
 
-	public Dictionary<int, Dictionary<int, Zone>> TheGrid; 
+	public Dictionary<int, Dictionary<int, Zone>> TheGrid;
+
+	public PathFinding PathFinder;
 
 	public void init()
 	{
@@ -32,6 +34,8 @@ public class Grid : MonoBehaviour
 
 		_width = _topRight.transform.position.x - _topLeft.transform.position.x;
 		_height = _topRight.transform.position.y - _bottomLeft.transform.position.y;
+
+		PathFinder = new PathFinding();
 
 		draw();
 	}
@@ -90,6 +94,8 @@ public class Grid : MonoBehaviour
 		UnselectAllZones();
 		selectedZones.Add(zone);
 		zone.Select();
+
+		Main.instance.dude.GotTo(zone);
 	}
 
 	public void UnselectAllZones()

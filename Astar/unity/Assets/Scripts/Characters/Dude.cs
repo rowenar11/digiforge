@@ -13,6 +13,8 @@ public class Dude : MonoBehaviour
 {
 	private Animator animator;
 
+	private Zone myZone;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -44,6 +46,11 @@ public class Dude : MonoBehaviour
 		}
 	}
 
+	public void GotTo(Zone dest)
+	{
+		Main.instance.Grid.PathFinder.FindPath(myZone,dest);
+	}
+
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.gameObject.name == "ZoneCollider")
@@ -52,6 +59,7 @@ public class Dude : MonoBehaviour
 			if(zone != null)
 			{
 				zone.setHeroState();
+				myZone = zone;
 			}
 		}
 	}

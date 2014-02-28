@@ -9,6 +9,8 @@ public class Main : MonoSingleton<Main>
 	public Vector2 area;
 	public Arena arena;
 
+	public Dude dude;
+
 	void Start()
 	{
 		DontDestroyOnLoad(gameObject);
@@ -32,5 +34,8 @@ public class Main : MonoSingleton<Main>
 		GameObject levelOne = GameObject.Find("LevelOne");
 		arena = levelOne.GetComponent<Arena>();
 		arena.init();
+
+		GameObject dudeObj = GameObject.Find("dude");
+		dude = dudeObj.GetComponent<Dude>();
 	}
 }
