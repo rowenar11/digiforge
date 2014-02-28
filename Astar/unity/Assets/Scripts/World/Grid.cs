@@ -9,7 +9,7 @@ public class Grid : MonoBehaviour
 	private GameObject _zone;
 
 	private int _numCols = 16;
-	private int _numRows = 16;
+	private int _numRows = 14;
 
 	private GameObject _topLeft;
 	private GameObject _topRight;
@@ -82,7 +82,8 @@ public class Grid : MonoBehaviour
 
 				_zone.transform.position = pos;
 
-				z.init(ZONE_TYPE.FLOOR, new Vector2(x, y));
+				int rand = UnityEngine.Random.Range(1,10);
+				z.init( ((rand == 2 || rand == 6) ? ZONE_TYPE.BLOCK : ZONE_TYPE.FLOOR), new Vector2(x, y));
 
 				lastZone = _zone;
 			}

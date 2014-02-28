@@ -21,10 +21,31 @@ public class Zone : Touchable
 	public Material SELECTED;
 	public Material HIGHLIGHTED;
 	public Material NEIGHBOR;
+	public Material NEAREST;
 	public Material HERO;
+	public Material PATH;
 
 	private bool _collisionActive=false;
 	private ZoneCollider _collider;
+
+	public Zone parentZone;
+
+	public float gScore;
+	public float hScore;
+	public float fScore;
+
+	private ZONE_STATES _state = ZONE_STATES.NONE;
+	public ZONE_STATES ZoneState
+	{
+		get { return _state; }
+	}
+
+	
+	private ZONE_TYPE _type;
+	public ZONE_TYPE ZoneType
+	{
+		get { return _type; }
+	}
 
 	private Vector2 _id;
 	public Vector2 id
@@ -44,11 +65,16 @@ public class Zone : Touchable
 		{
 			_initted = true;
 			_id = id;
+			_type = type;
 
 			switch(type)
 			{
 				case ZONE_TYPE.FLOOR:
 					this.gameObject.renderer.material = FLOOR;
+					break;
+
+				case ZONE_TYPE.BLOCK:
+					this.gameObject.renderer.material = BLOCK;
 					break;
 			}
 
@@ -70,12 +96,34 @@ public class Zone : Touchable
 		_collider.Enable();
 	}
 
+	public void setPathState()
+	{
+		disableTap();
+		disableMouseOvr();
+
+		this.gameObject.renderer.material = PATH;
+	}
+
 	public void setNeighborState()
 	{
 		disableTap();
 		disableMouseOvr();
-		Debug.LogError("NEIGHBOR STATE");
-		this.gameObject.renderer.material = NEIGHBOR;
+
+		if (_state != ZONE_STATES.SELECTED)
+		{
+			this.gameObject.renderer.material = NEIGHBOR;
+		}
+	}
+
+	public void setNearestState()
+	{
+		disableTap();
+		disableMouseOvr();
+
+		if (_state != ZONE_STATES.SELECTED)
+		{
+			this.gameObject.renderer.material = NEAREST;
+		}
 	}
 
 	public void setHeroState()
@@ -83,6 +131,7 @@ public class Zone : Touchable
 		disableTap();
 		disableMouseOvr();
 
+		_state = ZONE_STATES.HERO;
 		this.gameObject.renderer.material = HERO;
 	}
 
@@ -114,6 +163,9 @@ public class Zone : Touchable
 	public void Select()
 	{
 		this.gameObject.renderer.material = SELECTED;
+
+		_state = ZONE_STATES.SELECTED;
+
 		disableTap();
 		disableMouseOvr();
 	}
@@ -121,6 +173,9 @@ public class Zone : Touchable
 	public void DeSelect()
 	{
 		this.gameObject.renderer.material = FLOOR;
+
+		_state = ZONE_STATES.NONE;
+
 		enableTap();
 		enableMouseOvr();
 	}

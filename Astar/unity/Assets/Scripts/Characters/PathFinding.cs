@@ -27,7 +27,31 @@ public class PathFinding : MonoBehaviour
 
 	private Zone _source;
 	private Zone _dest;
-	private Zone _current;
+
+	private Zone _nextNearest;
+
+	private int _iterations = 0;
+
+	private bool _verbose = false;
+
+	private void highlightPath(Zone finalZone)
+	{
+		finalZone.setPathState();
+
+		Zone nextParent = finalZone.parentZone;
+
+		bool done = false;
+		while(!done)
+		{
+			nextParent.setPathState();
+
+			if (nextParent.parentZone != null)
+			{
+				nextParent = nextParent.parentZone;
+			}
+			else done = true;
+		}
+	}
 
 	public List<Zone> FindPath(Zone source,Zone dest)
 	{
@@ -36,42 +60,134 @@ public class PathFinding : MonoBehaviour
 
 		Debug.LogWarning("");
 		Debug.LogWarning("FindPath() "+source.id+" : "+dest.id);
-		_current = source;
+		_source = source;
+		_dest = dest;
 
-		iteratePath(_current);
+		opened.Add(_source);
+
+		iteratePath();
+
 		return path;
 	}
+
 
 	public void Step()
 	{
 		Debug.LogWarning(" *|* ");
-		iteratePath(_current);
+		Debug.Log("");
+		iteratePath();
 	}
 
-	private void iteratePath(Zone currentZone)
+	private void iteratePath()
 	{
-		opened.Add(currentZone);
-
-		Dictionary<PATH_DIRECTION,Zone> neighbors = getNieghbors(currentZone);
-		Debug.Log(" Neighbors : " + neighbors);
-		foreach(KeyValuePair<PATH_DIRECTION,Zone> kvp in neighbors)
+//		Debug.Log("");
+//		Debug.Log("");
+//		Debug.Log("iteratePath () " + _iterations);
+		float lowestScore = -1f;
+//		Debug.Log("SEARCH OPEN ZONES !");
+		foreach(Zone openZone in opened)
 		{
-			Debug.LogError("NEIGHBOR : "+kvp.Key+" "+kvp.Value+" : "+kvp.Value.id);
-			kvp.Value.setNeighborState();
+//			Debug.Log(" [" + openZone.id + "] " + openZone.fScore);
+			if (lowestScore == -1 || openZone.fScore < lowestScore)
+			{
+//				Debug.LogWarning("is next lowest!~!~!");
+				lowestScore = openZone.fScore;
+				_nextNearest = openZone;
+			}
 		}
 
-		calculateScores(neighbors);
+//		Debug.Log(" FOUND AS THE NEXT NEAREST : ["+_nextNearest.id+"] ");
+		if(_nextNearest == _dest)
+		{
+			Debug.Log("OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG "+opened.Count);
+			Debug.Log("MADE IT : " + _iterations);
+			Debug.Log("OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG");
+			highlightPath(_nextNearest);
+		}
+		else
+		{
+			if(opened.Contains(_nextNearest)) opened.Remove(_nextNearest);
+			closed.Add(_nextNearest);
 
-		Zone nextZone = currentZone;
+			_nextNearest.setNearestState();
 
-		found = true;
-		if(!found) iteratePath(nextZone);
+			Dictionary<PATH_DIRECTION, Zone> neighbors = getNieghbors(_nextNearest);
+//			Debug.Log(" LOOP Neighbors : " + neighbors);
+			foreach(KeyValuePair<PATH_DIRECTION, Zone> kvp in neighbors)
+			{
+				if (kvp.Value != null && kvp.Value.ZoneType != ZONE_TYPE.BLOCK && (closed.Count <= 0 || !closed.Contains(kvp.Value)))
+				{
+					if(!opened.Contains(kvp.Value))
+					{
+						opened.Add(kvp.Value);
+						kvp.Value.setNeighborState();
+
+						kvp.Value.parentZone = _nextNearest;
+
+						kvp.Value.gScore = kvp.Value.parentZone.gScore + calculateGScore(kvp.Key);
+						kvp.Value.hScore = calculateHScore(kvp.Value);
+						kvp.Value.fScore = calculateFScore(kvp.Value);
+					}
+					else
+					{
+						if(_nextNearest.gScore + calculateGScore(kvp.Key) < kvp.Value.gScore)
+						{
+							kvp.Value.parentZone = _nextNearest;
+							kvp.Value.gScore = _nextNearest.gScore + calculateGScore(kvp.Key);
+							kvp.Value.fScore = calculateFScore(kvp.Value);
+						}
+					}
+				}
+			}
+
+			if (opened.Count < 1 || _iterations > 100)
+			{
+				Debug.LogError("OH FUCK NO PATH !!!!!!!!!!!!!!");
+			}
+
+			_iterations++;
+
+			iteratePath();
+		}
+
+//		found = true;
+
 	}
 
-	private void calculateScores(Dictionary<PATH_DIRECTION,Zone> neighbors)
+	private float calculateFScore(Zone delta)
 	{
-		Debug.LogWarning("calculateScores() ");
+		return delta.gScore + delta.hScore;
+	}
 
+	private float calculateHScore(Zone delta)
+	{
+		float horizontal = Mathf.Abs(delta.id.x - _dest.id.x);
+		float vertical = Mathf.Abs(delta.id.y - _dest.id.y);
+
+		return (horizontal + vertical)*10;
+	}
+
+	private float calculateGScore(PATH_DIRECTION direction)
+	{
+		switch(direction)
+		{
+			case PATH_DIRECTION.NORTH:
+			case PATH_DIRECTION.SOUTH:
+			case PATH_DIRECTION.WEST:
+			case PATH_DIRECTION.EAST:
+				return 10;
+				break;
+
+			case PATH_DIRECTION.NORTH_EAST:
+			case PATH_DIRECTION.NORTH_WEST:
+			case PATH_DIRECTION.SOUTH_EAST:
+			case PATH_DIRECTION.SOUTH_WEST:
+				return 14;
+				break;
+
+			default:
+				return 0f;
+		}
 	}
 
 	private Dictionary<PATH_DIRECTION,Zone> getNieghbors(Zone delta)
@@ -92,49 +208,73 @@ public class PathFinding : MonoBehaviour
 
 	private Zone getNorth(Zone delta)
 	{
-		if(delta.id.y < 1) return null;
+		if(delta.id.y == 0) return null;
 		return _grid.TheGrid[(int)delta.id.y - 1][(int)delta.id.x];
 	}
 
 	private Zone getNorthEast(Zone delta)
 	{
-		if(delta.id.y < 1 || delta.id.x >= _grid.TheGrid[(int)delta.id.y].Count) return null;
+		if(delta.id.y == 0 || delta.id.x >= _grid.TheGrid[(int)delta.id.y].Count-1) return null;
+
+		if(_grid.TheGrid[(int)delta.id.y - 1][(int)delta.id.x].ZoneType == ZONE_TYPE.BLOCK || _grid.TheGrid[(int)delta.id.y][(int)delta.id.x + 1].ZoneType == ZONE_TYPE.BLOCK)
+		{
+			return null;
+		}
+
 		return _grid.TheGrid[(int)delta.id.y - 1][(int)delta.id.x+1];
 	}
 
 	private Zone getNorthWest(Zone delta)
 	{
-		if(delta.id.y < 1 || delta.id.x < 0) return null;
+		if(delta.id.y == 0 || delta.id.x == 0) return null;
+
+		if (_grid.TheGrid[(int)delta.id.y - 1][(int)delta.id.x].ZoneType == ZONE_TYPE.BLOCK || _grid.TheGrid[(int)delta.id.y][(int)delta.id.x - 1].ZoneType == ZONE_TYPE.BLOCK)
+		{
+			return null;
+		}
+
 		return _grid.TheGrid[(int)delta.id.y - 1][(int)delta.id.x - 1];
 	}
 
 	private Zone getWest(Zone delta)
 	{
-		if(delta.id.x < 0) return null;
+		if(delta.id.x == 0) return null;
 		return _grid.TheGrid[(int)delta.id.y][(int)delta.id.x-1];
 	}
 
 	private Zone getSouth(Zone delta)
 	{
-		if(delta.id.y >= _grid.TheGrid.Count) return null;
+		if(delta.id.y >= _grid.TheGrid.Count-1) return null;
 		return _grid.TheGrid[(int)delta.id.y + 1][(int)delta.id.x];
 	}
 
 	private Zone getSouthWest(Zone delta)
 	{
-		if(delta.id.y >= _grid.TheGrid.Count || delta.id.x < 0) return null;
+		if(delta.id.y >= _grid.TheGrid.Count-1 || delta.id.x == 0) return null;
+
+		if (_grid.TheGrid[(int)delta.id.y + 1][(int)delta.id.x].ZoneType == ZONE_TYPE.BLOCK || _grid.TheGrid[(int)delta.id.y][(int)delta.id.x - 1].ZoneType == ZONE_TYPE.BLOCK)
+		{
+			return null;
+		}
+
 		return _grid.TheGrid[(int)delta.id.y + 1][(int)delta.id.x - 1];
 	}
 
 	private Zone getSouthEast(Zone delta)
 	{
-		if(delta.id.y >= _grid.TheGrid.Count || delta.id.x >= _grid.TheGrid[(int)delta.id.y].Count) return null;
+		if(delta.id.y >= _grid.TheGrid.Count-1 || delta.id.x >= _grid.TheGrid[(int)delta.id.y].Count-1) return null;
+
+		if (_grid.TheGrid[(int)delta.id.y + 1][(int)delta.id.x].ZoneType == ZONE_TYPE.BLOCK || _grid.TheGrid[(int)delta.id.y][(int)delta.id.x + 1].ZoneType == ZONE_TYPE.BLOCK)
+		{
+			return null;
+		}
+
 		return _grid.TheGrid[(int)delta.id.y + 1][(int)delta.id.x + 1];
 	}
 
 	private Zone getEast(Zone delta)
 	{
-		if(delta.id.x >= _grid.TheGrid[(int)delta.id.y].Count) return null;
+		if(delta.id.x >= _grid.TheGrid[(int)delta.id.y].Count-1) return null;
 		return _grid.TheGrid[(int)delta.id.y][(int)delta.id.x + 1];
 	}
 

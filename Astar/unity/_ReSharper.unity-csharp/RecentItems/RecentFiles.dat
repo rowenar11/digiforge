@@ -3,14 +3,14 @@
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Art/d:Shaders/f:textureShader.shader" caret="562" fromTop="30" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Arena.cs" caret="108" fromTop="6" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/f:Fuck.cs" caret="611" fromTop="41" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/f:ZoneCollider.cs" caret="195" fromTop="13" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Grid.cs" caret="2257" fromTop="39" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:Dude.cs" caret="993" fromTop="50" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Input/f:Touchable.cs" caret="755" fromTop="38" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/f:Main.cs" caret="867" fromTop="41" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:StepButton.cs" caret="212" fromTop="12" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Zone.cs" caret="2275" fromTop="89" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:PathFinding.cs" caret="3156" fromTop="55" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/f:ZoneCollider.cs" caret="532" fromTop="31" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/f:Main.cs" caret="0" fromTop="0" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Input/f:Touchable.cs" caret="5055" fromTop="46" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Zone.cs" caret="242" fromTop="19" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:StepButton.cs" caret="464" fromTop="25" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Grid.cs" caret="1012" fromTop="39" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:PathFinding.cs" caret="3320" fromTop="74" />
   </RecentFiles>
   <RecentEdits>
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Art/d:Shaders/f:textureShader.shader" caret="562" fromTop="30" />
@@ -18,11 +18,11 @@
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Input/f:Touchable.cs" caret="4982" fromTop="61" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/f:Fuck.cs" caret="611" fromTop="41" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/f:ZoneCollider.cs" caret="195" fromTop="13" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Grid.cs" caret="2265" fromTop="48" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:Dude.cs" caret="976" fromTop="50" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/f:Main.cs" caret="814" fromTop="37" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:StepButton.cs" caret="213" fromTop="12" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Zone.cs" caret="1280" fromTop="34" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:PathFinding.cs" caret="3156" fromTop="55" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Grid.cs" caret="248" fromTop="11" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Zone.cs" caret="1756" fromTop="67" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:StepButton.cs" caret="526" fromTop="30" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:PathFinding.cs" caret="3319" fromTop="74" />
   </RecentEdits>
 </RecentFiles>
