@@ -1,0 +1,121 @@
+fileFormatVersion: 2
+guid: e56a26d0f4a467b489a14199cb2aefb3
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings:
+  - buildTarget: iPhone
+    maxTextureSize: 1024
+    textureFormat: -2
+    compressionQuality: 50
+  spriteSheet:
+    sprites:
+    - name: Turret_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 642
+        width: 405
+        height: 126
+      alignment: 9
+      pivot: {x: .269680649, y: .506854832}
+    - name: Turret_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 480
+        width: 405
+        height: 126
+      alignment: 9
+      pivot: {x: .269680649, y: .493145168}
+    - name: Turret_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 285
+        width: 405
+        height: 126
+      alignment: 9
+      pivot: {x: .273945808, y: .506854832}
+    - name: Turret_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 90
+        width: 405
+        height: 126
+      alignment: 9
+      pivot: {x: .269680649, y: .486290574}
+    - name: Turret_5
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 642
+        width: 405
+        height: 126
+      alignment: 9
+      pivot: {x: .271813214, y: .506854832}
+    - name: Turret_6
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 480
+        width: 405
+        height: 126
+      alignment: 9
+      pivot: {x: .267547995, y: .493145168}
+    - name: Turret_7
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 285
+        width: 405
+        height: 126
+      alignment: 9
+      pivot: {x: .271813214, y: .513709664}
+    - name: Turret_8
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 90
+        width: 405
+        height: 126
+      alignment: 9
+      pivot: {x: .278210908, y: .500000119}
+  spritePackingTag: 
+  userData: 

@@ -11,6 +11,8 @@ public class Main : MonoSingleton<Main>
 
 	public Dude dude;
 
+	private bool _init=false;
+
 	void Start()
 	{
 		DontDestroyOnLoad(gameObject);
@@ -19,23 +21,37 @@ public class Main : MonoSingleton<Main>
 	
 	private void init()
 	{
-		float h = 2 * Camera.main.orthographicSize;
-		float w = h * Camera.main.aspect;
+		if (!_init)
+		{
+			_init = true;
+			Debug.Log("");
+			Debug.Log(" INIT()  :::::::::: ");
+			Debug.Log("");
 
-		area = new Vector2(w,h);
+			float h = 2*Camera.main.orthographicSize;
+			float w = h*Camera.main.aspect;
 
-		Debug.Log("INIT MAIN : "+Screen.width+" x "+Screen.height);
-		Debug.Log("camera : " + area.x + " x " + area.y);
+			area = new Vector2(w, h);
 
-		GameObject gridPrefab = (GameObject)Instantiate(grid);
-		Grid = gridPrefab.GetComponent<Grid>();
-		Grid.init();
+			GameObject gridPrefab = (GameObject) Instantiate(grid);
+			Grid = gridPrefab.GetComponent<Grid>();
+			Grid.init();
 
-		GameObject levelOne = GameObject.Find("LevelOne");
-		arena = levelOne.GetComponent<Arena>();
-		arena.init();
+			GameObject levelOne = GameObject.Find("LevelOne");
+			arena = levelOne.GetComponent<Arena>();
+			arena.init();
 
-		GameObject dudeObj = GameObject.Find("dude");
-		dude = dudeObj.GetComponent<Dude>();
+			GameObject dudeObj = GameObject.Find("dude");
+			dude = dudeObj.GetComponent<Dude>();
+
+			//Link ui buttons
+			GameObject.Find("StepButton").GetComponent<BaseButton>().Subscribe(this, Grid.PathFinder.Step);
+			GameObject.Find("ClearButton").GetComponent<BaseButton>().Subscribe(this, Grid.PathFinder.Clear);
+			GameObject.Find("IncrementButton").GetComponent<BaseButton>().Subscribe(this, Grid.PathFinder.ToggleMode);
+		}
+		else
+		{
+			Debug.LogWarning("NOPE");
+		}
 	}
 }

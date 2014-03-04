@@ -59,12 +59,16 @@
      <Compile Include="Assets\FingerGestures\Toolbox\TBTap.cs" />
      <Compile Include="Assets\FingerGestures\Utils\GestureStateTracker.cs" />
      <Compile Include="Assets\FingerGestures\Utils\MoveToFinger.cs" />
-     <Compile Include="Assets\Fuck.cs" />
      <Compile Include="Assets\Scripts\Characters\Dude.cs" />
      <Compile Include="Assets\Scripts\Characters\PathFinding.cs" />
+     <Compile Include="Assets\Scripts\Characters\Turret.cs" />
+     <Compile Include="Assets\Scripts\FX\BulletHoles.cs" />
+     <Compile Include="Assets\Scripts\FX\ShellCasings.cs" />
      <Compile Include="Assets\Scripts\Input\Touchable.cs" />
      <Compile Include="Assets\Scripts\Main.cs" />
-     <Compile Include="Assets\Scripts\UI\StepButton.cs" />
+     <Compile Include="Assets\Scripts\MainTurret.cs" />
+     <Compile Include="Assets\Scripts\UI\BaseButton.cs" />
+     <Compile Include="Assets\Scripts\UI\BaseCheckBox.cs" />
      <Compile Include="Assets\Scripts\Utils\DontDestroy.cs" />
      <Compile Include="Assets\Scripts\Utils\EpochUtils.cs" />
      <Compile Include="Assets\Scripts\Utils\EventManager.cs" />
@@ -77,7 +81,7 @@
      <Compile Include="Assets\Scripts\World\Arena.cs" />
      <Compile Include="Assets\Scripts\World\Grid.cs" />
      <Compile Include="Assets\Scripts\World\Zone.cs" />
-     <Compile Include="Assets\ZoneCollider.cs" />
+     <Compile Include="Assets\Scripts\World\ZoneCollider.cs" />
      <Compile Include="Assets\iTween\Plugins\iTween.cs" />
      <Compile Include="Assets\iTween\Sample\MoveSample.cs" />
      <Compile Include="Assets\iTween\Sample\RotateSample.cs" />

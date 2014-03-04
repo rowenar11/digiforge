@@ -1,28 +1,39 @@
 ﻿<RecentFiles>
   <RecentFiles>
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Art/d:Shaders/f:textureShader.shader" caret="562" fromTop="30" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Arena.cs" caret="108" fromTop="6" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/f:Fuck.cs" caret="611" fromTop="41" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:Dude.cs" caret="993" fromTop="50" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/f:ZoneCollider.cs" caret="532" fromTop="31" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/f:Main.cs" caret="0" fromTop="0" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Input/f:Touchable.cs" caret="5055" fromTop="46" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Zone.cs" caret="242" fromTop="19" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:StepButton.cs" caret="464" fromTop="25" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Grid.cs" caret="1012" fromTop="39" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:PathFinding.cs" caret="3320" fromTop="74" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:FingerGestures/d:Toolbox/d:Misc/f:TBPinchZoom.cs" caret="2214" fromTop="78" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Input/f:Touchable.cs" caret="385" fromTop="20" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:BaseCheckBox.cs" caret="460" fromTop="29" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:BaseButton.cs" caret="44" fromTop="1" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:ZoneCollider.cs" caret="791" fromTop="42" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Arena.cs" caret="0" fromTop="0" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:FX/f:BulletHoles.cs" caret="3648" fromTop="92" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:FX/f:ShellCasings.cs" caret="1116" fromTop="36" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:Dude.cs" caret="252" fromTop="17" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Zone.cs" caret="1317" fromTop="54" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Utils/f:MonoSingleton.cs" caret="667" fromTop="19" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/f:Main.cs" caret="347" fromTop="23" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:PathFinding.cs" caret="795" fromTop="49" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/f:MainTurret.cs" caret="223" fromTop="11" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Grid.cs" caret="1878" fromTop="49" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:Turret.cs" caret="892" fromTop="42" />
   </RecentFiles>
   <RecentEdits>
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Art/d:Shaders/f:textureShader.shader" caret="562" fromTop="30" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Arena.cs" caret="108" fromTop="6" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Input/f:Touchable.cs" caret="4982" fromTop="61" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/f:Fuck.cs" caret="611" fromTop="41" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/f:ZoneCollider.cs" caret="195" fromTop="13" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:ZoneCollider.cs" caret="195" fromTop="13" />
     <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:Dude.cs" caret="976" fromTop="50" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/f:Main.cs" caret="814" fromTop="37" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Grid.cs" caret="248" fromTop="11" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Zone.cs" caret="1756" fromTop="67" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:StepButton.cs" caret="526" fromTop="30" />
-    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:PathFinding.cs" caret="3319" fromTop="74" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:BaseCheckBox.cs" caret="678" fromTop="39" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:UI/f:BaseButton.cs" caret="1105" fromTop="54" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Utils/f:MonoSingleton.cs" caret="1930" fromTop="64" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/f:Main.cs" caret="370" fromTop="25" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Zone.cs" caret="1507" fromTop="51" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:Turret.cs" caret="1273" fromTop="45" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:FX/f:BulletHoles.cs" caret="3618" fromTop="91" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:FX/f:ShellCasings.cs" caret="1637" fromTop="57" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:Characters/f:PathFinding.cs" caret="385" fromTop="24" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/f:MainTurret.cs" caret="789" fromTop="38" />
+    <File id="C3DA89E1-70C6-7D6C-993E-C8F831D35880/d:Assets/d:Scripts/d:World/f:Grid.cs" caret="2260" fromTop="63" />
   </RecentEdits>
 </RecentFiles>

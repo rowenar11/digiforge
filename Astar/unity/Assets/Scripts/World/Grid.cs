@@ -25,8 +25,12 @@ public class Grid : MonoBehaviour
 
 	public PathFinding PathFinder;
 
-	public void init()
+	private bool _allowBlocks;
+
+	public void init(bool allowBlocks=true)
 	{
+		_allowBlocks = allowBlocks;
+
 		_topLeft = GameObject.Find("Marker_TopLeft");
 		_topRight = GameObject.Find("Marker_TopRight");
 		_bottomLeft = GameObject.Find("Marker_BottomLeft");
@@ -36,6 +40,7 @@ public class Grid : MonoBehaviour
 		_height = _topRight.transform.position.y - _bottomLeft.transform.position.y;
 
 		PathFinder = new PathFinding();
+		PathFinder.Init(GetComponent<Grid>());
 
 		draw();
 	}
@@ -83,11 +88,27 @@ public class Grid : MonoBehaviour
 				_zone.transform.position = pos;
 
 				int rand = UnityEngine.Random.Range(1,10);
-				z.init( ((rand == 2 || rand == 6) ? ZONE_TYPE.BLOCK : ZONE_TYPE.FLOOR), new Vector2(x, y));
+				z.init(((_allowBlocks && (rand == 2 || rand == 6)) ? ZONE_TYPE.BLOCK : ZONE_TYPE.FLOOR), new Vector2(x, y));
 
 				lastZone = _zone;
 			}
 		}
+	}
+
+	public void ReDraw()
+	{
+		foreach(KeyValuePair<int,Dictionary<int, Zone>> row in TheGrid)
+		{
+			foreach(KeyValuePair<int,Zone> col in row.Value)
+			{
+				col.Value.Dispose();
+				Destroy(col.Value);
+			}
+		}
+
+		selectedZones = new List<Zone>();
+
+		draw();
 	}
 
 	public void SelectZone(Zone zone)

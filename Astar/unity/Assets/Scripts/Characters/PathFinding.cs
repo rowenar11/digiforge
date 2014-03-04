@@ -20,10 +20,9 @@ public class PathFinding : MonoBehaviour
 	private List<Zone> closed;
 	private List<Zone> opened;
 
-	private bool found = false;
 	private List<Zone> path;
 
-	private Grid _grid = Main.instance.Grid;
+	private Grid _grid;
 
 	private Zone _source;
 	private Zone _dest;
@@ -33,6 +32,13 @@ public class PathFinding : MonoBehaviour
 	private int _iterations = 0;
 
 	private bool _verbose = false;
+
+	private bool incrementMode = false;
+
+	public void Init(Grid grid)
+	{
+		_grid = grid;
+	}
 
 	private void highlightPath(Zone finalZone)
 	{
@@ -51,15 +57,24 @@ public class PathFinding : MonoBehaviour
 			}
 			else done = true;
 		}
+
+		_source = null;
+		_dest = null;
 	}
 
 	public List<Zone> FindPath(Zone source,Zone dest)
 	{
+		_iterations = 0;
+
+		_nextNearest = null;
+
 		opened = new List<Zone>();
 		closed = new List<Zone>();
+		path = new List<Zone>();
 
 		Debug.LogWarning("");
 		Debug.LogWarning("FindPath() "+source.id+" : "+dest.id);
+
 		_source = source;
 		_dest = dest;
 
@@ -73,9 +88,20 @@ public class PathFinding : MonoBehaviour
 
 	public void Step()
 	{
-		Debug.LogWarning(" *|* ");
+		if(_dest != null) iteratePath();
+	}
+
+	public void Clear()
+	{
 		Debug.Log("");
-		iteratePath();
+		Debug.Log("CLEAR() ");
+
+		Main.instance.Grid.ReDraw();
+	}
+
+	public void ToggleMode()
+	{
+		incrementMode = GameObject.Find("IncrementButton").GetComponent<BaseCheckBox>().isChecked;
 	}
 
 	private void iteratePath()
@@ -140,18 +166,14 @@ public class PathFinding : MonoBehaviour
 				}
 			}
 
-			if (opened.Count < 1 || _iterations > 100)
+			if (opened.Count < 1 || _iterations > 1000)
 			{
 				Debug.LogError("OH FUCK NO PATH !!!!!!!!!!!!!!");
 			}
 
 			_iterations++;
-
-			iteratePath();
+			if(!incrementMode) iteratePath();
 		}
-
-//		found = true;
-
 	}
 
 	private float calculateFScore(Zone delta)

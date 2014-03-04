@@ -16,14 +16,14 @@ public enum ZONE_STATES
 
 public class Zone : Touchable
 {
-	public Material FLOOR;
-	public Material BLOCK;
-	public Material SELECTED;
-	public Material HIGHLIGHTED;
-	public Material NEIGHBOR;
-	public Material NEAREST;
-	public Material HERO;
-	public Material PATH;
+	public Texture FLOOR;
+	public Texture BLOCK;
+	public Texture SELECTED;
+	public Texture HIGHLIGHTED;
+	public Texture NEIGHBOR;
+	public Texture NEAREST;
+	public Texture HERO;
+	public Texture PATH;
 
 	private bool _collisionActive=false;
 	private ZoneCollider _collider;
@@ -70,11 +70,11 @@ public class Zone : Touchable
 			switch(type)
 			{
 				case ZONE_TYPE.FLOOR:
-					this.gameObject.renderer.material = FLOOR;
+					this.gameObject.renderer.material.mainTexture = FLOOR;
 					break;
 
 				case ZONE_TYPE.BLOCK:
-					this.gameObject.renderer.material = BLOCK;
+					this.gameObject.renderer.material.mainTexture = BLOCK;
 					break;
 			}
 
@@ -101,7 +101,7 @@ public class Zone : Touchable
 		disableTap();
 		disableMouseOvr();
 
-		this.gameObject.renderer.material = PATH;
+		this.gameObject.renderer.material.mainTexture = PATH;
 	}
 
 	public void setNeighborState()
@@ -111,7 +111,7 @@ public class Zone : Touchable
 
 		if (_state != ZONE_STATES.SELECTED)
 		{
-			this.gameObject.renderer.material = NEIGHBOR;
+			this.gameObject.renderer.material.mainTexture = NEIGHBOR;
 		}
 	}
 
@@ -122,7 +122,7 @@ public class Zone : Touchable
 
 		if (_state != ZONE_STATES.SELECTED)
 		{
-			this.gameObject.renderer.material = NEAREST;
+			this.gameObject.renderer.material.mainTexture = NEAREST;
 		}
 	}
 
@@ -132,17 +132,17 @@ public class Zone : Touchable
 		disableMouseOvr();
 
 		_state = ZONE_STATES.HERO;
-		this.gameObject.renderer.material = HERO;
+		this.gameObject.renderer.material.mainTexture = HERO;
 	}
 
 	protected override void OnMouseOvr()
 	{
-		this.gameObject.renderer.material = HIGHLIGHTED;
+		this.gameObject.renderer.material.mainTexture = HIGHLIGHTED;
 	}
 
 	protected override void OnMouseOff()
 	{
-		this.gameObject.renderer.material = FLOOR;
+		this.gameObject.renderer.material.mainTexture = FLOOR;
 	}
 
 	protected override void OnTap(Vector2 fingerPos)
@@ -162,7 +162,7 @@ public class Zone : Touchable
 
 	public void Select()
 	{
-		this.gameObject.renderer.material = SELECTED;
+		this.gameObject.renderer.material.mainTexture = SELECTED;
 
 		_state = ZONE_STATES.SELECTED;
 
@@ -172,7 +172,7 @@ public class Zone : Touchable
 
 	public void DeSelect()
 	{
-		this.gameObject.renderer.material = FLOOR;
+		this.gameObject.renderer.material.mainTexture = FLOOR;
 
 		_state = ZONE_STATES.NONE;
 
@@ -202,5 +202,10 @@ public class Zone : Touchable
 		{
 			Debug.Log("ZONE OnTriggerStay2D()" + other.gameObject.name);
 		}
+	}
+
+	public void Dispose()
+	{
+		Destroy(gameObject);
 	}
 }
