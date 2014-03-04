@@ -8,26 +8,34 @@ public class Turret : MonoBehaviour
 	private bool _initted = false;
 
 	public GameObject shellCasings;
-	public GameObject bulletHole;
+
+	public GameObject bulletHoleFactoryObj;
+	public BulletHoleFactory BulletHoleFactory;
+
+	public GameObject shellCasingFactoryObj;
+	public ShellCasingFactory ShellCasingFactory;
 
 	public void init()
 	{
 		if(!_initted)
 		{
-			Debug.Log("here");
 			_animator = this.GetComponent<Animator>();
 			_initted = true;
-		}
-		else
-		{
-			Debug.Log("nope noep");
+
+			GameObject bFact = (GameObject)Instantiate(bulletHoleFactoryObj);
+			BulletHoleFactory = bFact.GetComponent<BulletHoleFactory>();
+			BulletHoleFactory.init();
+
+			GameObject sFact = (GameObject)Instantiate(shellCasingFactoryObj);
+			ShellCasingFactory = sFact.GetComponent<ShellCasingFactory>();
+			ShellCasingFactory.init();
 		}
 	}
 
 	private RaycastHit hit;
 
 	// Update is called once per frame
-	void Update () 
+	void Update()
 	{
 		if(_initted)
 		{
@@ -41,29 +49,44 @@ public class Turret : MonoBehaviour
 
 				if(Random.Range(0,3) == 2)
 				{
-					GameObject shellCasing = (GameObject) Instantiate(shellCasings);
-					ShellCasings sC = shellCasing.GetComponent<ShellCasings>();
-					sC.Init(gameObject.transform.position);
+					ShellCasing shellCasing = ShellCasingFactory.GetShellCasing(gameObject.transform.position);
 				}
 
 				RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right);
 				Debug.DrawRay(transform.position, transform.right*8, Color.green);
 				if(hit.collider != null)
 				{
-					GameObject bulletWallSpecks = (GameObject)Instantiate(bulletHole);
-					bulletWallSpecks.GetComponent<BulletHoles>().Init(hit.collider.gameObject, hit.point);
+					BulletHole bulletHole = BulletHoleFactory.GetBullet(hit.collider.gameObject,hit.point);
 				}
-
-				//_initted = false;
 			}
 			else
 			{
 				_animator.SetInteger("Fire", 0);
 			}
-
-			//Debug.Log(_animator.GetInteger("Fire"));
 		}
 	}
 
 
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		//if(_zone != null && _zone.initted && other != null) _zone.OnTriggerEnter2D(other);
+		if(other.gameObject.GetComponent<ZoneCollider>() != null)
+		{
+			ZoneCollider zc = other.gameObject.GetComponent<ZoneCollider>();
+			zc.zone.setHeroState();
+			Debug.Log("HERO AND STUFF");
+		}
+	}
+
+	void OnTriggerExit2D(Collider2D other)
+	{
+		//if(_zone != null && _zone.initted && other != null) _zone.OnTriggerExit2D(other);
+//		Debug.Log("OnTriggerExit2D");
+	}
+
+	void OnTriggerStay2D(Collider2D other)
+	{
+		//if(_zone != null && other != null) _zone.OnTriggerExit2D(other);
+//		Debug.Log("OnTriggerStay2D");
+	}
 }

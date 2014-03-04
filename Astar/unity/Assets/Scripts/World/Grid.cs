@@ -27,7 +27,9 @@ public class Grid : MonoBehaviour
 
 	private bool _allowBlocks;
 
-	public void init(bool allowBlocks=true)
+	private Transform Zones;
+
+	public void init(bool allowBlocks=true,int forceLayer=-1)
 	{
 		_allowBlocks = allowBlocks;
 
@@ -42,10 +44,13 @@ public class Grid : MonoBehaviour
 		PathFinder = new PathFinding();
 		PathFinder.Init(GetComponent<Grid>());
 
-		draw();
+		GameObject gz = new GameObject("Grid_Zones");
+		Zones = gz.transform;
+
+		draw(forceLayer);
 	}
 
-	private void draw()
+	private void draw(int forceLayer=-1)
 	{
 		TheGrid = new Dictionary<int, Dictionary<int, Zone>>();
 
@@ -84,11 +89,11 @@ public class Grid : MonoBehaviour
 				}
 
 				_zone.transform.localScale = new Vector3(colWidth,colHeight,transform.localScale.z);
-
 				_zone.transform.position = pos;
+				_zone.transform.parent = Zones;
 
 				int rand = UnityEngine.Random.Range(1,10);
-				z.init(((_allowBlocks && (rand == 2 || rand == 6)) ? ZONE_TYPE.BLOCK : ZONE_TYPE.FLOOR), new Vector2(x, y));
+				z.init(((_allowBlocks && (rand == 2 || rand == 6)) ? ZONE_TYPE.BLOCK : ZONE_TYPE.FLOOR),new Vector2(x,y),forceLayer);
 
 				lastZone = _zone;
 			}
@@ -126,5 +131,34 @@ public class Grid : MonoBehaviour
 		{
 			zone.DeSelect();
 		}
+	}
+
+	public Zone GetRandomBlankZone()
+	{
+		Debug.LogError("GetRandomBlankZone");
+		Debug.Log(" X COUNT : " + TheGrid.Count + ", Y COUNT : " + TheGrid[0].Count);
+
+		Zone foundZone;
+		bool found = false;
+		int iterator = 0;
+		while(!found)
+		{
+			Zone potentialZone = TheGrid[UnityEngine.Random.Range(0,TheGrid.Count - 1)][UnityEngine.Random.Range(0,TheGrid[0].Count)];
+			if(potentialZone.ZoneType == ZONE_TYPE.FLOOR)
+			{
+				Debug.LogError("OMG : "+potentialZone.id);
+				found = true;
+				return potentialZone;
+			}
+
+			iterator++;
+			if(!found && iterator > 100)
+			{
+				Debug.LogError("uhjhhhh");
+				found = true;
+			}
+		}
+
+		return null;
 	}
 }

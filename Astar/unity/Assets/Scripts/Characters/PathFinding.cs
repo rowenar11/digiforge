@@ -49,6 +49,8 @@ public class PathFinding : MonoBehaviour
 		bool done = false;
 		while(!done)
 		{
+			path.Add(nextParent);
+
 			nextParent.setPathState();
 
 			if (nextParent.parentZone != null)

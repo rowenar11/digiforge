@@ -59,7 +59,12 @@ public class Zone : Touchable
 		get { return _initted; }
 	}
 
-	public void init(ZONE_TYPE type,Vector2 id)
+	public Vector3 position
+	{
+		get {return gameObject.transform.position; }
+	}
+
+	public void init(ZONE_TYPE type,Vector2 id, int layer=-1)
 	{
 		if(!_initted)
 		{
@@ -85,6 +90,11 @@ public class Zone : Touchable
 			}
 
 			_collider = gameObject.transform.Find("ZoneCollider").gameObject.GetComponent<ZoneCollider>();
+			if(layer != -1)
+			{
+				gameObject.layer = layer;
+				_collider.gameObject.layer = layer;
+			}
 
 			StartCoroutine(_activate());
 		}

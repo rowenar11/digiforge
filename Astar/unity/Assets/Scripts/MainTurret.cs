@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MainTurret : MonoBehaviour
+public class MainTurret : MonoSingleton<MainTurret>
 {
 	public GameObject TurretObj;
-	private Turret TurretDude;
+	public Turret TurretDude;
 
 	public GameObject grid;
 	public Grid Grid;
@@ -13,12 +13,18 @@ public class MainTurret : MonoBehaviour
 	public Arena arena;
 
 	private bool _init = false;
+	private bool _gameRunning = false;
+
+	public GameObject enemySpawnerObj;
+	public EnemySpawner enemySpawner;
 
 	void Start()
 	{
 		DontDestroyOnLoad(gameObject);
 		init();
 	}
+
+	private bool _createBlueEnemy = true;
 
 	private void init()
 	{
@@ -36,11 +42,34 @@ public class MainTurret : MonoBehaviour
 
 			GameObject gridPrefab = (GameObject)Instantiate(grid);
 			Grid = gridPrefab.GetComponent<Grid>();
-			Grid.init(false);
+			Grid.init(false,2);
+
+			GameObject eObj = (GameObject)Instantiate(enemySpawnerObj);
+			enemySpawner = eObj.GetComponent<EnemySpawner>();
+			enemySpawner.init();
 		}
-		else
+
+		StartCoroutine(StartGame());
+	}
+
+	private IEnumerator StartGame()
+	{
+		yield return new WaitForSeconds(0.4f);
+		_gameRunning = true;
+	}
+
+	void Update()
+	{
+		if(_gameRunning)
 		{
-			Debug.LogWarning("Nope");
+			if(_createBlueEnemy)
+			{
+				_createBlueEnemy = false;
+				BlueEnemy enemy = enemySpawner.SpawnBlue();
+				Debug.LogError("ENEMY : "+enemy);
+				enemy.Init(Grid.GetRandomBlankZone());
+
+			}
 		}
 	}
 }
