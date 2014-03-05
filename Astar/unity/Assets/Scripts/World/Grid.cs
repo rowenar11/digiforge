@@ -135,18 +135,13 @@ public class Grid : MonoBehaviour
 
 	public Zone GetRandomBlankZone()
 	{
-		Debug.LogError("GetRandomBlankZone");
-		Debug.Log(" X COUNT : " + TheGrid.Count + ", Y COUNT : " + TheGrid[0].Count);
-
-		Zone foundZone;
 		bool found = false;
 		int iterator = 0;
 		while(!found)
 		{
 			Zone potentialZone = TheGrid[UnityEngine.Random.Range(0,TheGrid.Count - 1)][UnityEngine.Random.Range(0,TheGrid[0].Count)];
-			if(potentialZone.ZoneType == ZONE_TYPE.FLOOR)
+			if(potentialZone.ZoneType == ZONE_TYPE.FLOOR && potentialZone.ZoneState != ZONE_STATES.HERO)
 			{
-				Debug.LogError("OMG : "+potentialZone.id);
 				found = true;
 				return potentialZone;
 			}
@@ -154,7 +149,6 @@ public class Grid : MonoBehaviour
 			iterator++;
 			if(!found && iterator > 100)
 			{
-				Debug.LogError("uhjhhhh");
 				found = true;
 			}
 		}

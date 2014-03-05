@@ -15,6 +15,9 @@ public class Turret : MonoBehaviour
 	public GameObject shellCasingFactoryObj;
 	public ShellCasingFactory ShellCasingFactory;
 
+	public GameObject bloodFactoryObj;
+	public BloodFactory BloodFactory;
+
 	public void init()
 	{
 		if(!_initted)
@@ -29,12 +32,15 @@ public class Turret : MonoBehaviour
 			GameObject sFact = (GameObject)Instantiate(shellCasingFactoryObj);
 			ShellCasingFactory = sFact.GetComponent<ShellCasingFactory>();
 			ShellCasingFactory.init();
+
+			GameObject blFact = (GameObject)Instantiate(bloodFactoryObj);
+			BloodFactory = blFact.GetComponent<BloodFactory>();
+			BloodFactory.init();
 		}
 	}
 
 	private RaycastHit hit;
 
-	// Update is called once per frame
 	void Update()
 	{
 		if(_initted)
@@ -46,8 +52,7 @@ public class Turret : MonoBehaviour
 			if(Input.GetMouseButtonDown(0) || Input.GetMouseButton(0))
 			{
 				_animator.SetInteger("Fire", 1);
-
-				if(Random.Range(0,3) == 2)
+				if(Random.Range(0,2) == 2)
 				{
 					ShellCasing shellCasing = ShellCasingFactory.GetShellCasing(gameObject.transform.position);
 				}
@@ -55,14 +60,22 @@ public class Turret : MonoBehaviour
 				RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right);
 				Debug.DrawRay(transform.position, transform.right*8, Color.green);
 				if(hit.collider != null)
-				{
-					BulletHole bulletHole = BulletHoleFactory.GetBullet(hit.collider.gameObject,hit.point);
+				{//ASK ED ABOUT THIS TOMORROW
+					if(hit.collider.gameObject.name.IndexOf("Wall") != -1)
+					{
+						BulletHole bulletHole = BulletHoleFactory.GetBullet(hit.collider.gameObject, hit.point);
+					}
+					else
+					{
+						if(hit.collider.gameObject.GetComponent<BaseEnemy>() != null)
+						{
+							hit.collider.gameObject.GetComponent<BaseEnemy>().TakeHit();
+							BloodSpurt blood = BloodFactory.GetBlood(hit.point, false);
+						}
+					}
 				}
 			}
-			else
-			{
-				_animator.SetInteger("Fire", 0);
-			}
+			else _animator.SetInteger("Fire", 0);
 		}
 	}
 
@@ -74,7 +87,6 @@ public class Turret : MonoBehaviour
 		{
 			ZoneCollider zc = other.gameObject.GetComponent<ZoneCollider>();
 			zc.zone.setHeroState();
-			Debug.Log("HERO AND STUFF");
 		}
 	}
 

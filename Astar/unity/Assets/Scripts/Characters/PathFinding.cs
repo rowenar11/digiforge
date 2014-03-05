@@ -43,14 +43,13 @@ public class PathFinding : MonoBehaviour
 	private void highlightPath(Zone finalZone)
 	{
 		finalZone.setPathState();
-
+		path.Add(finalZone);
 		Zone nextParent = finalZone.parentZone;
 
 		bool done = false;
 		while(!done)
 		{
 			path.Add(nextParent);
-
 			nextParent.setPathState();
 
 			if (nextParent.parentZone != null)
@@ -127,9 +126,6 @@ public class PathFinding : MonoBehaviour
 //		Debug.Log(" FOUND AS THE NEXT NEAREST : ["+_nextNearest.id+"] ");
 		if(_nextNearest == _dest)
 		{
-			Debug.Log("OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG "+opened.Count);
-			Debug.Log("MADE IT : " + _iterations);
-			Debug.Log("OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG");
 			highlightPath(_nextNearest);
 		}
 		else
@@ -143,7 +139,7 @@ public class PathFinding : MonoBehaviour
 //			Debug.Log(" LOOP Neighbors : " + neighbors);
 			foreach(KeyValuePair<PATH_DIRECTION, Zone> kvp in neighbors)
 			{
-				if (kvp.Value != null && kvp.Value.ZoneType != ZONE_TYPE.BLOCK && (closed.Count <= 0 || !closed.Contains(kvp.Value)))
+				if (kvp.Value != null && kvp.Value.ZoneType != ZONE_TYPE.BLOCK && kvp.Value.ZoneState != ZONE_STATES.HERO && (closed.Count <= 0 || !closed.Contains(kvp.Value)))
 				{
 					if(!opened.Contains(kvp.Value))
 					{
@@ -168,7 +164,7 @@ public class PathFinding : MonoBehaviour
 				}
 			}
 
-			if (opened.Count < 1 || _iterations > 1000)
+			if(opened.Count < 1 || _iterations > 1000)
 			{
 				Debug.LogError("OH FUCK NO PATH !!!!!!!!!!!!!!");
 			}
