@@ -66,7 +66,6 @@ public class MainTurret : MonoSingleton<MainTurret>
 			{
 				_createBlueEnemy = false;
 				BlueEnemy enemy = enemySpawner.SpawnBlue();
-				Debug.LogError("ENEMY : "+enemy);
 				enemy.Init(Grid.GetRandomBlankZone());
 
 			}

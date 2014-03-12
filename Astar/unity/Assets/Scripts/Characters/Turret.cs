@@ -52,7 +52,7 @@ public class Turret : MonoBehaviour
 			if(Input.GetMouseButtonDown(0) || Input.GetMouseButton(0))
 			{
 				_animator.SetInteger("Fire", 1);
-				if(Random.Range(0,2) == 2)
+				if(Random.Range(0,2) == 1)
 				{
 					ShellCasing shellCasing = ShellCasingFactory.GetShellCasing(gameObject.transform.position);
 				}
@@ -60,7 +60,7 @@ public class Turret : MonoBehaviour
 				RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right);
 				Debug.DrawRay(transform.position, transform.right*8, Color.green);
 				if(hit.collider != null)
-				{//ASK ED ABOUT THIS TOMORROW
+				{
 					if(hit.collider.gameObject.name.IndexOf("Wall") != -1)
 					{
 						BulletHole bulletHole = BulletHoleFactory.GetBullet(hit.collider.gameObject, hit.point);

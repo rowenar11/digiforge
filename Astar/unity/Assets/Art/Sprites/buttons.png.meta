@@ -117,5 +117,41 @@ TextureImporter:
         height: 118
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: buttons_createAccount
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 135
+        width: 500
+        height: 115
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: buttons_createAccountOvr
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 12
+        width: 500
+        height: 118
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: buttons_login
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 645
+        width: 308
+        height: 123
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: buttons_loginOvr
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 515
+        width: 310
+        height: 119
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 
