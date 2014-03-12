@@ -26,6 +26,7 @@ public class CreateAccount : MonoSingleton<CreateAccount>
 
 			GameObject.Find("CreateAccountBtn").GetComponent<BaseButton>().Subscribe(this, CreateAccountHdlr);
 			GameObject.Find("LoginBtn").GetComponent<BaseButton>().Subscribe(this, LoginHdlr);
+			GameObject.Find("TestBtn").GetComponent<BaseButton>().Subscribe(this,TestHdlr);
 		}
 		else
 		{
@@ -82,6 +83,16 @@ public class CreateAccount : MonoSingleton<CreateAccount>
 		}
 	}
 
+	private void TestHdlr()
+	{
+		if (!created)
+		{
+			NetworkControl.instance.test(testReturn);
+			created = true;
+			_showError = false;
+		}
+	}
+
 	private void loginAccountReturn(object dataObj = null)
 	{
 		created = false;
@@ -109,7 +120,14 @@ public class CreateAccount : MonoSingleton<CreateAccount>
 		}
 	}
 
+	private void testReturn(object dataObj = null)
+	{
+		created = false;
 
+		_showError = true;
+		_errorMessage = "OMG IT WORKED!";
+
+	}
 
 	private bool _showError = false;
 	private string _errorMessage = "";

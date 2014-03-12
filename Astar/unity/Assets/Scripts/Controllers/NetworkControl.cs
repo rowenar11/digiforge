@@ -16,10 +16,17 @@ public class NetworkControl : MonoSingleton<NetworkControl>
 		DontDestroyOnLoad(gameObject);
 	}
 
-	public int sessionId = -1;
-	public int userId=-1;
-	public string userName = "";
-	public string userEmail = "";
+//	public int sessionId = -1;
+//	public int userId=-1;
+//	public string userName = "";
+//	public string userEmail = "";
+
+	public int sessionId = 1;
+	public int userId = 1;
+
+	public string userName = "Dave";
+	public string userEmail = "dave@davegeurts.com";
+
 	public int userTotalScore = -1;
 
 	private int queryId = 0;
@@ -44,7 +51,6 @@ public class NetworkControl : MonoSingleton<NetworkControl>
 			queryFailCallBack = new Dictionary<WWW, delegateNetworkData>();
 		}
 	}
-
 
 	public void sendData(string command, Hashtable dataObj, delegateNetworkData callBack = null, delegateNetworkData failCallBack = null)
 	{
@@ -105,7 +111,7 @@ public class NetworkControl : MonoSingleton<NetworkControl>
 
 			if(!ignore.Contains(int.Parse(returnData["qid"].ToString())))
 			{
-				UnityEngine.Debug.Log("WWW>" + www.text);
+				//UnityEngine.Debug.Log("WWW>" + www.text);
 			}
 			else ignore.Remove(int.Parse(returnData["qid"].ToString()));
 
@@ -139,6 +145,12 @@ public class NetworkControl : MonoSingleton<NetworkControl>
 		sendData("createAccount", loginObj, callBack, failCallBack);
 	}
 
+	public void test(delegateNetworkData callBack = null,delegateNetworkData failCallBack = null)
+	{
+		Hashtable loginObj = new Hashtable();
+		sendData("test",loginObj,callBack,failCallBack);
+	}
+
 	public void login(string email, delegateNetworkData callBack = null, delegateNetworkData failCallBack = null)
 	{
 		Hashtable loginObj = new Hashtable();
@@ -152,10 +164,11 @@ public class NetworkControl : MonoSingleton<NetworkControl>
 		sendData("getState", loginObj, callBack, failCallBack);
 	}
 
-	public void recordScore(int value, delegateNetworkData callBack = null, delegateNetworkData failCallBack = null)
+	public void recordScore(int value, string type, delegateNetworkData callBack = null, delegateNetworkData failCallBack = null)
 	{
 		Hashtable loginObj = new Hashtable();
 		loginObj["value"] = value;
+		loginObj["type"] = type;
 		sendData("recordScore", loginObj, callBack, failCallBack);
 	}
 
@@ -269,4 +282,6 @@ public class NetworkControl : MonoSingleton<NetworkControl>
 				break;
 		}
 	}
+
+
 }
