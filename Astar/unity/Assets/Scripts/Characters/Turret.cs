@@ -52,10 +52,10 @@ public class Turret : MonoBehaviour
 			if(Input.GetMouseButtonDown(0) || Input.GetMouseButton(0))
 			{
 				_animator.SetInteger("Fire", 1);
-				if(Random.Range(0,2) == 1)
-				{
+//				if(Random.Range(0,1) == 1)
+//				{
 					ShellCasing shellCasing = ShellCasingFactory.GetShellCasing(gameObject.transform.position);
-				}
+//				}
 
 				RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right);
 				Debug.DrawRay(transform.position, transform.right*8, Color.green);
@@ -85,6 +85,7 @@ public class Turret : MonoBehaviour
 		//if(_zone != null && _zone.initted && other != null) _zone.OnTriggerEnter2D(other);
 		if(other.gameObject.GetComponent<ZoneCollider>() != null)
 		{
+			Debug.Log("asfasdf");
 			ZoneCollider zc = other.gameObject.GetComponent<ZoneCollider>();
 			zc.zone.setHeroState();
 		}

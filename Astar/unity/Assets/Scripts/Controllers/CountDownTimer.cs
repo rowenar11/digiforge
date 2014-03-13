@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public delegate void delegateTimerTick(int secondsLeft);
 
-public class CountDownTimer : MonoSingleton<NetworkControl>
+public class CountDownTimer : MonoSingleton<CountDownTimer>
 {
 	void Start()
 	{
@@ -16,20 +16,22 @@ public class CountDownTimer : MonoSingleton<NetworkControl>
 	private delegateTimerTick _tick;
 	private bool _running = false;
 
-	public void reset()
+	public void resetTimer()
 	{
-		CancelInvoke("Countdown");
+		CancelInvoke("tickTock");
 		_duration = 0;
 	}	
-	public void start(int duration, delegateTimerTick tick)
+	public void startTimer(int duration, delegateTimerTick tick)
 	{
+		_running = true;
+
 		_duration = duration;
 		_tick = tick;
 
 		InvokeRepeating("tickTock",1.0f,1.0f);
 	}
 
-	public void stop()
+	public void stopTimer()
 	{
 		_running = false;
 	}
@@ -38,10 +40,8 @@ public class CountDownTimer : MonoSingleton<NetworkControl>
 	{
 		if(_running)
 		{
-			Debug.Log("tickTock() " + _duration);
 			if(--_duration == 0)
 			{
-				CancelInvoke("Countdown");
 				_tick(0);
 			}
 

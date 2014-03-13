@@ -27,7 +27,7 @@ public class NetworkControl : MonoSingleton<NetworkControl>
 	public string userName = "Dave";
 	public string userEmail = "dave@davegeurts.com";
 
-	public int userTotalScore = -1;
+	public int userTotalScore = 0;
 
 	private int queryId = 0;
 	private Hashtable queryCallBack;

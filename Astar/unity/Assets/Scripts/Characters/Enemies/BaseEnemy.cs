@@ -18,14 +18,22 @@ public class BaseEnemy : MonoBehaviour
 		_animator = gameObject.GetComponent<Animator>();
 
 		_path = MainTurret.instance.Grid.PathFinder.FindPath(startingZone,MainTurret.instance.Grid.GetRandomBlankZone());
+		if (_path == null || _path.Count < 1 || _path[0] == null)
+		{
+			Init(startingZone);
+		}
+
 		navigatePath();
 	}
 
+	private Zone nextZone;
 	private void navigatePath()
 	{
 		_pathIterator++;
 
-		Zone nextZone = _path[_path.Count - 1];
+		
+
+		nextZone = _path[_path.Count - 1];
 		_path.RemoveAt(_path.Count - 1);
 
 		Vector3 diff = gameObject.transform.position - nextZone.transform.position;
@@ -42,8 +50,8 @@ public class BaseEnemy : MonoBehaviour
 				if(diff.y < 0) _animator.SetInteger("Direction", (int) DIRECTIONS.UP);
 				else _animator.SetInteger("Direction", (int) DIRECTIONS.DOWN);
 			}
-			
-			iTween.MoveTo(gameObject,iTween.Hash("x", nextZone.position.x, "y", nextZone.position.y, "easeType", "easeOutExpo", "oncomplete","navigateToZoneComplete"));
+
+			iTween.MoveTo(gameObject, iTween.Hash("x", nextZone.position.x, "y", nextZone.position.y, "easeType", "easeOutExpo", "oncomplete", "navigateToZoneComplete"));
 		}
 		else navigatePath();
 	}
@@ -55,14 +63,15 @@ public class BaseEnemy : MonoBehaviour
 
 	private IEnumerator waitNextZone()
 	{
-		yield return new WaitForSeconds(0.45f);
+		yield return new WaitForSeconds(0.01f);
 		if(_path.Count > 0)
 		{
 			navigatePath();
 		}
 		else
 		{
-			Debug.LogWarning("ALL DONE AND SHIT");
+			MainTurret.instance.Grid.ReDraw();
+			_findMe = true;
 		}
 	}
 
@@ -75,11 +84,17 @@ public class BaseEnemy : MonoBehaviour
 		}
 	}
 
+	private bool _findMe = false;
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.gameObject.GetComponent<ZoneCollider>() != null)
+		if (_findMe)
 		{
-			ZoneCollider zc = other.gameObject.GetComponent<ZoneCollider>();
+			if(other.gameObject.GetComponent<ZoneCollider>() != null)
+			{
+				ZoneCollider zc = other.gameObject.GetComponent<ZoneCollider>();
+				_findMe = false;
+				Init(zc.zone);
+			}
 		}
 	}
 }

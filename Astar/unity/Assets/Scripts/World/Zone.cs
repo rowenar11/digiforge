@@ -34,6 +34,8 @@ public class Zone : Touchable
 	public float hScore;
 	public float fScore;
 
+	public GameObject rayCollider;
+
 	private ZONE_STATES _state = ZONE_STATES.NONE;
 	public ZONE_STATES ZoneState
 	{
@@ -72,6 +74,9 @@ public class Zone : Touchable
 			_id = id;
 			_type = type;
 
+			rayCollider.SetActive(false);
+			rayCollider.GetComponent<BoxCollider2D>().enabled = false;
+
 			switch(type)
 			{
 				case ZONE_TYPE.FLOOR:
@@ -80,6 +85,8 @@ public class Zone : Touchable
 
 				case ZONE_TYPE.BLOCK:
 					this.gameObject.renderer.material.mainTexture = BLOCK;
+					rayCollider.SetActive(true);
+					rayCollider.GetComponent<BoxCollider2D>().enabled = true;
 					break;
 			}
 

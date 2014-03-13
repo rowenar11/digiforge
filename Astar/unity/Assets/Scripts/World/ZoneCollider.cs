@@ -4,6 +4,7 @@ using System.Collections;
 public class ZoneCollider : MonoBehaviour
 {
 	private Zone _zone;
+	public bool meStarted=false;
 
 	public Zone zone
 	{
@@ -22,6 +23,7 @@ public class ZoneCollider : MonoBehaviour
 
 	void Start()
 	{
+		meStarted = true;
 		_zone = gameObject.transform.parent.gameObject.GetComponent<Zone>();
 	}
 

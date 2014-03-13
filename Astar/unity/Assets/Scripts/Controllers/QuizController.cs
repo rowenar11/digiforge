@@ -2,6 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public class User
+{
+	public string name;
+	public string email;
+	public string totalScore;
+
+	public User(string _name, string _email, string _totalScore)
+	{
+		name = _name;
+		email = _email;
+		totalScore = _totalScore;
+	}
+}
+
 public class Quiz
 {
 	public List<Question> questions;
@@ -55,11 +69,22 @@ public class QuizController : MonoBehaviour
 	public Dictionary<int,string> quizAnswersAnswer;
 
 	public Sprite quiz1_4;
+	public Sprite quiz1_11;
+	public Sprite quiz1_14;
 	public Sprite quiz2_3;
 	public Sprite quiz2_4;
+	public Sprite quiz2_9;
+	public Sprite quiz2_17;
 	public Dictionary<int,Dictionary<int,Sprite>> imageQuestionsImages;
 
 	private SpriteRenderer spriteRenderer;
+
+	private bool _waitMode = false;
+	private bool _forceOver = false;
+
+	private bool showLeaderBoard = false;
+
+	private List<User> leaderBoard; 
 
 	void Start()
 	{
@@ -73,9 +98,13 @@ public class QuizController : MonoBehaviour
 			imageQuestionsImages = new Dictionary<int,Dictionary<int,Sprite>>();
 			imageQuestionsImages[1] = new Dictionary<int,Sprite>();
 			imageQuestionsImages[1][4] = quiz1_4;
+			imageQuestionsImages[1][11] = quiz1_11;
+			imageQuestionsImages[1][14] = quiz1_14;
 			imageQuestionsImages[2] = new Dictionary<int,Sprite>();
 			imageQuestionsImages[2][3] = quiz2_3;
 			imageQuestionsImages[2][4] = quiz2_4;
+			imageQuestionsImages[2][9] = quiz2_9;
+			imageQuestionsImages[2][17] = quiz2_17;
 
 			initGui();
 			NetworkControl.instance.init();
@@ -96,14 +125,53 @@ public class QuizController : MonoBehaviour
 			Debug.LogWarning(" SCREEN : "+Screen.width+"x"+Screen.height);
 
 			Debug.LogError("OMG LETS GET THE QUIZ : "+NetworkControl.instance.currentSubState);
-			NetworkControl.instance.getActiveQuiz(NetworkControl.instance.currentSubState, gotQuiz);
+			if(NetworkControl.instance.currentSubState < 4)
+			{
+				NetworkControl.instance.getActiveQuiz(NetworkControl.instance.currentSubState, gotQuiz);
+			}
+			else
+			{
+				NetworkControl.instance.getLeaderBoard(gotLeaderBoard);
+			}
 		}
 		else
 		{
 			Debug.LogWarning("NOPE");
 		}
 	}
-	
+
+	private void gotLeaderBoard(object dataObj)
+	{
+		Dictionary<string, object> gotLeaderBoard = (Dictionary<string, object>)dataObj;
+
+		leaderBoard = new List<User>();
+
+		if (gotLeaderBoard.ContainsKey("success") && gotLeaderBoard.ContainsKey("data"))
+		{
+			quizObj = new Quiz();
+
+			Dictionary<string, object> data = gotLeaderBoard["data"] as Dictionary<string, object>;
+			Debug.Log("" + gotLeaderBoard["data"]);
+			foreach (object userObj in data["leaderboard"]  as List<object>)
+			{
+				User newUser = new User("","","");
+				foreach (KeyValuePair<string, object> user in userObj as Dictionary<string, object>)
+				{
+					Debug.LogError(" [" + user.Key + "] " + user.Value);
+					switch(user.Key)
+					{
+						case "name": newUser.name = user.Value.ToString(); break;
+						case "email": newUser.email = user.Value.ToString(); break;
+						case "totalScore": newUser.totalScore = user.Value.ToString(); break;
+							
+					}
+				}
+				leaderBoard.Add(newUser);
+			}
+			showLeaderBoard = true;
+		}
+	}
+
 	private void gotQuiz(object dataObj)
 	{
 		Dictionary<string, object> loginReturn = (Dictionary<string, object>)dataObj;
@@ -162,6 +230,10 @@ public class QuizController : MonoBehaviour
 
 			Debug.Log("OMG WE HAVE A QUIZ : "+quizObj.questions.Count+" : ");
 			questionNumber = 0;
+			_secondsLeft = "120";
+			CountDownTimer.instance.startTimer(120, tick);
+//			_secondsLeft = "10";
+//			CountDownTimer.instance.startTimer(10, tick);
 			showNextQuestion();
 		}
 		else
@@ -173,12 +245,15 @@ public class QuizController : MonoBehaviour
 	private bool questionIsImage=false;
 	private void showNextQuestion()
 	{
+		if (_forceOver) return;
+
 		_quizMode = true;
 
 		Question q = quizObj.questions[questionNumber];
 		
 		if(!q.isImage)
 		{
+			questionIsImage = false;
 			_question = q.question;
 			spriteRenderer.sprite = null;
 		}
@@ -210,6 +285,8 @@ public class QuizController : MonoBehaviour
 
 	private void handleAnswer(int answerIdx)
 	{
+		if (_forceOver) return;
+
 		spriteRenderer.sprite = null;
 		_quizMode = false;
 		Answer a = quizObj.questions[questionNumber].answers[answerIdx];
@@ -225,11 +302,13 @@ public class QuizController : MonoBehaviour
 		}
 		quizAnswersAnswer.Add(questionNumber,a.answer);
 
-		NetworkControl.instance.recordScore( ((a.isCorrect)?0:quizObj.questions[questionNumber].value),"quiz_" + quizObj.questions[questionNumber].id,answerSent);
+		NetworkControl.instance.recordScore( ((!a.isCorrect)?0:quizObj.questions[questionNumber].value),"quiz_" + quizObj.questions[questionNumber].id,answerSent);
 	}
 
 	private void answerSent(object dataObj)
 	{
+		if (_forceOver) return;
+
 		questionNumber++;
 
 		if(questionNumber < quizObj.questions.Count)
@@ -239,7 +318,8 @@ public class QuizController : MonoBehaviour
 		else
 		{
 			_quizMode = false;
-			_resultsMode = true;
+			_waitMode = true;
+
 		}
 	}
 
@@ -262,20 +342,33 @@ public class QuizController : MonoBehaviour
 		bottomRight = translatePercent(new Vector2(95,95));
 	}
 
+	private string _secondsLeft;
+	public Vector2 scrollPosition = Vector2.zero;
+	public Vector2 scrollPosition2 = Vector2.zero;
+
 	void OnGUI()
 	{
-		if(_quizMode)
+		GUI.enabled = true;
+
+		GUIStyle myTextLargeStyle = new GUIStyle(GUI.skin.label);
+		myTextLargeStyle.fontSize = 50;
+		myTextLargeStyle.stretchWidth = true;
+		myTextLargeStyle.normal.textColor = Color.black;
+		myTextLargeStyle.alignment = TextAnchor.MiddleCenter;
+
+		GUIStyle myTextStyle = new GUIStyle(GUI.skin.label);
+		myTextStyle.fontSize = 30;
+		myTextStyle.stretchWidth = true;
+		myTextStyle.normal.textColor = Color.black;
+
+		GUIStyle smallerTextStyle = new GUIStyle(GUI.skin.label);
+		smallerTextStyle.fontSize = 25;
+		smallerTextStyle.normal.textColor = Color.black;
+
+		GUI.Label(new Rect(900, 11, 150, 150), _secondsLeft, myTextLargeStyle);
+
+		if (_quizMode)
 		{
-			GUI.enabled = true;
-			GUIStyle myTextStyle = new GUIStyle(GUI.skin.label);
-			myTextStyle.fontSize = 30;
-			myTextStyle.stretchWidth = true;
-			myTextStyle.normal.textColor = Color.black;
-
-			GUIStyle smallerTextStyle = new GUIStyle(GUI.skin.label);
-			smallerTextStyle.fontSize = 25;
-			smallerTextStyle.normal.textColor = Color.black;
-
 			GUI.BeginGroup(new Rect(topLeft.x,topLeft.y,topRight.x - topLeft.x,bottomRight.y - topRight.y));
 			GUILayout.BeginVertical();
 				GUILayout.BeginHorizontal();
@@ -322,20 +415,31 @@ public class QuizController : MonoBehaviour
 			GUI.EndGroup();
 			GUI.enabled = false;
 		}
+		else if(_waitMode)
+		{
+			GUI.BeginGroup(new Rect(topLeft.x, topLeft.y, topRight.x - topLeft.x, bottomRight.y - topRight.y));
+			GUILayout.BeginVertical();
+			GUILayout.Label("WAIT FOR RESULTS...", myTextStyle, GUILayout.Width(topRight.x - topLeft.x));
+			GUILayout.EndVertical();
+			GUI.EndGroup();
+			GUI.enabled = false;
+		}
 		else if(_resultsMode)
 		{
-			GUIStyle myTextStyle = new GUIStyle(GUI.skin.label);
-			myTextStyle.fontSize = 40;
-			myTextStyle.stretchWidth = true;
-			myTextStyle.normal.textColor = Color.black;
+			GUI.Label(new Rect(520, 11, 350, 150), "Total Score:"+NetworkControl.instance.userTotalScore, myTextLargeStyle);
 
-			GUIStyle smallerTextStyle = new GUIStyle(GUI.skin.label);
-			smallerTextStyle.fontSize = 25;
-			smallerTextStyle.normal.textColor = Color.black;
+			GUIStyle myTextStyle2 = new GUIStyle(GUI.skin.label);
+			myTextStyle2.fontSize = 40;
+			myTextStyle2.stretchWidth = true;
+			myTextStyle2.normal.textColor = Color.black;
+
+			GUIStyle smallerTextStyle2 = new GUIStyle(GUI.skin.label);
+			smallerTextStyle2.fontSize = 25;
+			smallerTextStyle2.normal.textColor = Color.black;
 
 			GUIStyle smallTextCorrectStyle = new GUIStyle(GUI.skin.label);
 			smallTextCorrectStyle.fontSize = 16;
-			smallTextCorrectStyle.normal.textColor = Color.green;
+			smallTextCorrectStyle.normal.textColor = Color.blue;
 
 			GUIStyle smallTextWrongStyle = new GUIStyle(GUI.skin.label);
 			smallTextWrongStyle.fontSize = 16;
@@ -345,11 +449,12 @@ public class QuizController : MonoBehaviour
 			GUILayout.BeginVertical();
 			GUILayout.BeginHorizontal();
 			GUILayout.BeginVertical();
-			GUILayout.Label("YOUR SCORE This quiz : +"+quizScore,myTextStyle,GUILayout.Width(topRight.x - topLeft.x));
+			GUILayout.Label("YOUR SCORE This quiz : +" + quizScore, myTextStyle2, GUILayout.Width(topRight.x - topLeft.x));
 			GUILayout.EndVertical();
 			GUILayout.EndHorizontal();
 			GUILayout.Space(10);
 
+			scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, true, GUILayout.Width(700), GUILayout.Height(500));
 			int zIt = 1;
 			foreach(KeyValuePair<int,bool> qa in quizAnswers)
 			{
@@ -360,8 +465,49 @@ public class QuizController : MonoBehaviour
 				GUILayout.EndVertical();
 				zIt++;
 			}
+			GUILayout.EndScrollView();
 
 			GUILayout.EndVertical();
+			GUI.EndGroup();
+			GUI.enabled = false;
+
+			
+		}
+		else if (showLeaderBoard)
+		{
+			GUI.Label(new Rect(520, 11, 350, 150), "LEADER BOARD", myTextLargeStyle);
+
+			GUIStyle myTextStyle2 = new GUIStyle(GUI.skin.label);
+			myTextStyle2.fontSize = 40;
+			myTextStyle2.stretchWidth = true;
+			myTextStyle2.normal.textColor = Color.black;
+
+			GUIStyle smallerTextStyle2 = new GUIStyle(GUI.skin.label);
+			smallerTextStyle2.fontSize = 25;
+			smallerTextStyle2.normal.textColor = Color.black;
+
+			GUIStyle smallTextCorrectStyle = new GUIStyle(GUI.skin.label);
+			smallTextCorrectStyle.fontSize = 16;
+			smallTextCorrectStyle.normal.textColor = Color.blue;
+
+			GUIStyle smallTextWrongStyle = new GUIStyle(GUI.skin.label);
+			smallTextWrongStyle.fontSize = 16;
+			smallTextWrongStyle.normal.textColor = Color.red;
+
+			GUI.BeginGroup(new Rect(topLeft.x, topLeft.y, topRight.x - topLeft.x, bottomRight.y - topRight.y));
+
+			scrollPosition2 = GUILayout.BeginScrollView(scrollPosition2, false, true, GUILayout.Width(700), GUILayout.Height(500));
+			int zIt = 1;
+			foreach (User user in leaderBoard)
+			{
+				GUILayout.Space(20);
+				GUILayout.BeginVertical();
+				GUILayout.Label("PLACE:" + zIt + " , Score:" + user.totalScore + ", " + user.name + " " + user.email + " " + user.totalScore, smallTextCorrectStyle, GUILayout.Width(topRight.x - topLeft.x));
+				GUILayout.EndVertical();
+				zIt++;
+			}
+			GUILayout.EndScrollView();
+
 			GUI.EndGroup();
 			GUI.enabled = false;
 		}
@@ -379,8 +525,22 @@ public class QuizController : MonoBehaviour
 		return per;
 	}
 
-	public delegate void textChangeDelegate(string value);
-	private void LabelAndTextField(string label,ref string text,textChangeDelegate changeAction = null)
+	private void tick(int secondsLeft)
 	{
+		if(!showLeaderBoard)
+		{
+			_secondsLeft = secondsLeft.ToString();
+
+			if(secondsLeft <= 0)
+			{
+				_forceOver = true;
+				questionIsImage = false;
+				if(spriteRenderer != null) spriteRenderer.sprite = null;
+
+				_quizMode = false;
+				_resultsMode = true;
+				_waitMode = false;
+			}
+		}
 	}
 }

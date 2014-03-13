@@ -74,7 +74,8 @@ public class PathFinding : MonoBehaviour
 		path = new List<Zone>();
 
 		Debug.LogWarning("");
-		Debug.LogWarning("FindPath() "+source.id+" : "+dest.id);
+		Debug.LogWarning("FindPath() " + source.id + "");
+		Debug.Log("dest : "+dest.id);
 
 		_source = source;
 		_dest = dest;
@@ -97,6 +98,7 @@ public class PathFinding : MonoBehaviour
 		Debug.Log("");
 		Debug.Log("CLEAR() ");
 
+		allDone = false;
 		Main.instance.Grid.ReDraw();
 	}
 
@@ -104,6 +106,8 @@ public class PathFinding : MonoBehaviour
 	{
 		incrementMode = GameObject.Find("IncrementButton").GetComponent<BaseCheckBox>().isChecked;
 	}
+
+	private bool allDone=false;
 
 	private void iteratePath()
 	{
@@ -164,13 +168,14 @@ public class PathFinding : MonoBehaviour
 				}
 			}
 
-			if(opened.Count < 1 || _iterations > 1000)
+			if(opened.Count < 1 || _iterations > 800)
 			{
-				Debug.LogError("OH FUCK NO PATH !!!!!!!!!!!!!!");
+				allDone = true;
+				Debug.LogError("NO WHERE TO GO NO WHERE TO GO");
 			}
 
 			_iterations++;
-			if(!incrementMode) iteratePath();
+			if(!incrementMode && !allDone) iteratePath();
 		}
 	}
 

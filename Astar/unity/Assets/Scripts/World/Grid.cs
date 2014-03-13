@@ -25,13 +25,22 @@ public class Grid : MonoBehaviour
 
 	public PathFinding PathFinder;
 
-	private bool _allowBlocks;
+	private int _allowBlocks;
 
 	private Transform Zones;
 
-	public void init(bool allowBlocks=true,int forceLayer=-1)
+	private int _forceLayer;
+	private bool _saveBlocks;
+
+	private bool _firstDraw=true;
+
+	private Dictionary<int, Dictionary<int, bool>> blocks; 
+
+	public void init(int allowBlocks=10,int forceLayer=-1,bool saveBlocks=false)
 	{
 		_allowBlocks = allowBlocks;
+		_forceLayer = forceLayer;
+		_saveBlocks = saveBlocks;
 
 		_topLeft = GameObject.Find("Marker_TopLeft");
 		_topRight = GameObject.Find("Marker_TopRight");
@@ -47,6 +56,8 @@ public class Grid : MonoBehaviour
 		GameObject gz = new GameObject("Grid_Zones");
 		Zones = gz.transform;
 
+		blocks = new Dictionary<int, Dictionary<int, bool>>();
+
 		draw(forceLayer);
 	}
 
@@ -61,6 +72,7 @@ public class Grid : MonoBehaviour
 		for (int y = 0; y < _numRows; y++)
 		{
 			TheGrid[y] = new Dictionary<int, Zone>();
+			if(_firstDraw) blocks[y] = new Dictionary<int, bool>();
 
 			for (int x = 0; x < _numCols; x++)
 			{
@@ -92,12 +104,24 @@ public class Grid : MonoBehaviour
 				_zone.transform.position = pos;
 				_zone.transform.parent = Zones;
 
-				int rand = UnityEngine.Random.Range(1,10);
-				z.init(((_allowBlocks && (rand == 2 || rand == 6)) ? ZONE_TYPE.BLOCK : ZONE_TYPE.FLOOR),new Vector2(x,y),forceLayer);
+				int rand = UnityEngine.Random.Range(1, _allowBlocks);
+
+
+				if(!_saveBlocks || _firstDraw)
+				{
+					z.init(((_allowBlocks > 0 && (rand == 2 || rand == 6)) ? ZONE_TYPE.BLOCK : ZONE_TYPE.FLOOR), new Vector2(x, y), forceLayer);
+					if (z.ZoneType == ZONE_TYPE.BLOCK) blocks[y][x] = true;
+					else blocks[y][x] = false;
+				}
+				else
+				{
+					z.init(((blocks[y][x] == true) ? ZONE_TYPE.BLOCK : ZONE_TYPE.FLOOR), new Vector2(x, y), forceLayer);
+				}
 
 				lastZone = _zone;
 			}
 		}
+		_firstDraw = false;
 	}
 
 	public void ReDraw()
@@ -113,15 +137,18 @@ public class Grid : MonoBehaviour
 
 		selectedZones = new List<Zone>();
 
-		draw();
+		draw(_forceLayer);
 	}
 
 	public void SelectZone(Zone zone)
 	{
+		Debug.Log("SELECT ZONE1! " + zone);
 		UnselectAllZones();
+		Debug.Log("SELECT ZONE2! " + zone);
 		selectedZones.Add(zone);
+		Debug.Log("SELECT ZONE3! " + zone);
 		zone.Select();
-
+		Debug.Log("SELECT ZONE4! " + zone);
 		Main.instance.dude.GotTo(zone);
 	}
 

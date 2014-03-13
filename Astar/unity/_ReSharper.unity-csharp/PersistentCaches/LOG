@@ -1,5 +1,5 @@
-2014/03/12-16:42:58.554 c84 Recovering log #3
-2014/03/12-16:42:58.556 c84 Level-0 table #5: started
-2014/03/12-16:42:58.561 c84 Level-0 table #5: 416806 bytes OK
-2014/03/12-16:42:58.564 c84 Delete type=0 #3
-2014/03/12-16:42:58.565 c84 Delete type=3 #2
+2014/03/12-23:07:44.814 252c Recovering log #6
+2014/03/12-23:07:44.814 252c Level-0 table #8: started
+2014/03/12-23:07:44.818 252c Level-0 table #8: 8279 bytes OK
+2014/03/12-23:07:44.837 252c Delete type=0 #6
+2014/03/12-23:07:44.837 252c Delete type=3 #4

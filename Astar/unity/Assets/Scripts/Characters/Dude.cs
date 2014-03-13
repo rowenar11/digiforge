@@ -15,11 +15,22 @@ public class Dude : MonoBehaviour
 
 	private Zone myZone;
 
+	private bool initted = false;
+	private bool detectStay = true;
+
 	// Use this for initialization
 	void Start()
 	{
 		animator = this.GetComponent<Animator>();
 		animator.SetInteger("Direction", (int)DIRECTIONS.DOWN);
+
+		StartCoroutine(waitInit());
+	}
+
+	private IEnumerator waitInit()
+	{
+		yield return new WaitForSeconds(1.0f);
+		initted = true;
 	}
 
 	// Update is called once per frame
@@ -48,18 +59,26 @@ public class Dude : MonoBehaviour
 
 	public void GotTo(Zone dest)
 	{
+		Debug.Log("my zone:" + myZone);
 		Main.instance.Grid.PathFinder.FindPath(myZone,dest);
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.gameObject.name == "ZoneCollider")
+		if(initted)
 		{
-			Zone zone = other.gameObject.GetComponent<ZoneCollider>().zone;
-			if(zone != null)
+			Debug.Log("HERO HERO HERO OnTriggerEnter2D " + other.gameObject.name);
+			if(other.gameObject.name == "ZoneCollider")
 			{
-				zone.setHeroState();
-				myZone = zone;
+				ZoneCollider zc = other.gameObject.GetComponent<ZoneCollider>();
+				Debug.Log("zc:" + zc.meStarted);
+				Zone zone = zc.zone;
+				Debug.Log("ZONE:" + zone);
+				if(zone != null)
+				{
+					zone.setHeroState();
+					myZone = zone;
+				}
 			}
 		}
 	}
@@ -71,14 +90,23 @@ public class Dude : MonoBehaviour
 
 	void OnTriggerStay2D(Collider2D other)
 	{
-//		if (other.gameObject.name == "ZoneCollider")
-//		{
-//			Zone zone = other.gameObject.GetComponent<ZoneCollider>().zone;
-//			if (zone != null)
-//			{
-//				//Debug.Log("zone:" + zone);
-//			}
-//		}
+		if(initted && detectStay)
+		{
+			Debug.Log("HERO HERO HERO OnTriggerEnter2D " + other.gameObject.name);
+			if (other.gameObject.name == "ZoneCollider")
+			{
+				ZoneCollider zc = other.gameObject.GetComponent<ZoneCollider>();
+				Debug.Log("zc:" + zc.meStarted);
+				Zone zone = zc.zone;
+				Debug.Log("ZONE:" + zone);
+				if (zone != null)
+				{
+					detectStay = false;
+					zone.setHeroState();
+					myZone = zone;
+				}
+			}
+		}
 	}
 
 }

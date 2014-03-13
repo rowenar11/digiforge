@@ -42,7 +42,7 @@ public class MainTurret : MonoSingleton<MainTurret>
 
 			GameObject gridPrefab = (GameObject)Instantiate(grid);
 			Grid = gridPrefab.GetComponent<Grid>();
-			Grid.init(false,2);
+			Grid.init(25,2,true);
 
 			GameObject eObj = (GameObject)Instantiate(enemySpawnerObj);
 			enemySpawner = eObj.GetComponent<EnemySpawner>();

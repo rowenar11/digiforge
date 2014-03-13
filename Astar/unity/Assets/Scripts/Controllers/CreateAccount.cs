@@ -25,7 +25,7 @@ public class CreateAccount : MonoSingleton<CreateAccount>
 			NetworkControl.instance.init();
 
 			GameObject.Find("CreateAccountBtn").GetComponent<BaseButton>().Subscribe(this, CreateAccountHdlr);
-			GameObject.Find("LoginBtn").GetComponent<BaseButton>().Subscribe(this, LoginHdlr);
+			//GameObject.Find("LoginBtn").GetComponent<BaseButton>().Subscribe(this, LoginHdlr);
 			GameObject.Find("TestBtn").GetComponent<BaseButton>().Subscribe(this,TestHdlr);
 		}
 		else
